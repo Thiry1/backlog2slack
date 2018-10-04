@@ -1,0 +1,19 @@
+{
+  "name": "backlog2slack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Thiry1/backlog2slack.git"
+  },
+  "author": "thiry",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Thiry1/backlog2slack/issues"
+  },
+  "homepage": "https://github.com/Thiry1/backlog2slack#readme"
+}
