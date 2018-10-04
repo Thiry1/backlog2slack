@@ -4,7 +4,9 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,22 @@
   "bugs": {
     "url": "https://github.com/Thiry1/backlog2slack/issues"
   },
-  "homepage": "https://github.com/Thiry1/backlog2slack#readme"
+  "homepage": "https://github.com/Thiry1/backlog2slack#readme",
+  "pre-commit": [
+    "lint-staged"
+  ],
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "tslint -p ./lint.tsconfig.json -c ./tslint.json -t verbose --fix",
+      "tsfmt -r",
+      "git add"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^10.11.3",
+    "lint-staged": "^7.3.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.1",
+    "typescript-formatter": "^7.2.2"
+  }
 }
