@@ -1,14 +1,21 @@
-import {BackLogWebHookPayload, SlackMessage} from "./type";
+import {BackLogWebHookPayload, SlackMessage, SlackNotification} from "./type";
 import {config} from "./config";
 
 const UNDEFINED_MESSAGE = "未設定";
 
 export namespace BackLogPayloadParser {
-    export const parse = (payload: BackLogWebHookPayload.BasePayload): SlackMessage | null => {
+    export const parse = (payload: BackLogWebHookPayload.BasePayload): SlackNotification | null => {
         if (!payload || !payload.type) {
             console.error(`invalid payload. payload: ${JSON.stringify(payload)}`);
             return null;
         }
+        const webHookUrl = getWebHookUrl(getProjectKey(payload));
+        return {
+            webHookUrl,
+            message: parsePayload(payload),
+        };
+    };
+    const parsePayload = (payload: BackLogWebHookPayload.BasePayload): SlackMessage => {
         const eventType: BackLogWebHookPayload.EventType = payload.type;
         switch (eventType) {
             case BackLogWebHookPayload.EventType.IssueAdded:
@@ -23,11 +30,20 @@ export namespace BackLogPayloadParser {
         }
     };
     /**
+     * プロジェクトの key を取得する
+     * @param payload
+     */
+    const getProjectKey = (payload: BackLogWebHookPayload.BasePayload): string => payload.project.projectKey;
+    /**
+     * プロジェクト名に対応する WebHook の URL を取得する.
+     */
+    const getWebHookUrl = (projectKey: string): string | null => config[projectKey].backlogRootUrl || null;
+    /**
      * 課題のリンクを作成する.
      * @param payload
      */
     const createIssueLink = (payload: BackLogWebHookPayload.BasePayload) =>
-        `${config.backlogRootUrl}/view/${payload.project.projectKey}-${payload.content.key_id}`;
+        `${config[getProjectKey(payload)].backlogRootUrl}/view/${payload.project.projectKey}-${payload.content.key_id}`;
     /**
      * コメントのリンクを作成する.
      * @param payload
@@ -49,11 +65,12 @@ export namespace BackLogPayloadParser {
      * @param payload
      */
     const parseIssueAddedPayload = (payload: BackLogWebHookPayload.IssueAddedPayload): SlackMessage => {
+        const projectKey = getProjectKey(payload);
         return {
             attachments: [
                 {
                     title: `${payload.content.summary}`,
-                    title_link: `${config.backlogRootUrl}/view/${payload.project.projectKey}-${payload.content.key_id}`,
+                    title_link: `${config[projectKey].backlogRootUrl}/view/${projectKey}-${payload.content.key_id}`,
                     pretext: "課題が追加されました",
                     color: "#36a64f",
                     fields: [

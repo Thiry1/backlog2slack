@@ -4,11 +4,11 @@ import {BackLogPayloadParser} from "./BackLogPayloadParser";
 import {SlackNotificator} from "./SlackNotificator";
 import {config} from "./config";
 
-if (config.backlogRootUrl === "" || config.slackWebhookUrl === "") {
+if (!config) {
     throw new Error("No config provided");
 }
 
-const slackNotificator = new SlackNotificator(config.slackWebhookUrl);
+const slackNotificator = new SlackNotificator();
 
 const app = express();
 

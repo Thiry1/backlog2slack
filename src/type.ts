@@ -254,3 +254,14 @@ export interface SlackMessage {
         }[];
     }[];
 }
+
+export interface SlackNotification {
+    /**
+     * 通知先 web hook url.
+     */
+    webHookUrl: string;
+    /**
+     * slack に通知する内容.
+     */
+    message: SlackMessage;
+}

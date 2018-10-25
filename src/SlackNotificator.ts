@@ -1,18 +1,15 @@
-import {SlackMessage} from "./type";
+import {SlackMessage, SlackNotification} from "./type";
 import fetch from "node-fetch";
 
 export class SlackNotificator {
-    constructor(private webhookUrl: string) {
-    }
-
     /**
      * 通知する.
      */
-    notify = async (message: SlackMessage): Promise<boolean> => {
+    notify = async (notification: SlackNotification): Promise<boolean> => {
         try {
-            await fetch(this.webhookUrl, {
+            await fetch(notification.webHookUrl, {
                 method: "POST",
-                body: JSON.stringify(message),
+                body: JSON.stringify(notification.message),
                 headers: {
                     "Content-Type": "application/json",
                 },
