@@ -18,6 +18,7 @@ export namespace BackLogPayloadParser {
             case BackLogWebHookPayload.EventType.Comment:
                 return parseCommentPayload(payload as BackLogWebHookPayload.CommentPayload);
             default:
+                console.error(`unsupported payload. payload: ${JSON.stringify(payload)}`);
                 return null;
         }
     };
