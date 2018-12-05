@@ -37,7 +37,7 @@ export namespace BackLogPayloadParser {
     /**
      * プロジェクト名に対応する WebHook の URL を取得する.
      */
-    const getWebHookUrl = (projectKey: string): string | null => getConfig()[projectKey].backlogRootUrl || null;
+    const getWebHookUrl = (projectKey: string): string | null => getConfig()[projectKey].slackWebhookUrl || null;
     /**
      * 課題のリンクを作成する.
      * @param payload
