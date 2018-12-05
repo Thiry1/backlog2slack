@@ -57,8 +57,24 @@ export namespace BackLogPayloadParser {
     const parseChanges = (changes: BackLogWebHookPayload.Change[]): { title: string, value: string }[] => {
         return changes.map(change => ({
             title: `変更されたフィールド: ${change.field}`,
-            value: `${change.old_value || UNDEFINED_MESSAGE} => ${change.new_value || UNDEFINED_MESSAGE}`,
+            value: parseChangeValue(change),
         }));
+    };
+    /**
+     * 変更された値をパースする.
+     * @param change
+     */
+    const parseChangeValue = (change: BackLogWebHookPayload.Change): string => {
+        if (change.field === "status") {
+            const statusMap: { [key: string]: string } = {
+                "1": "未対応",
+                "2": "処理中",
+                "3": "処理済み",
+                "4": "完了",
+            };
+            return `${statusMap[change.old_value] || UNDEFINED_MESSAGE} => ${statusMap[change.new_value] || UNDEFINED_MESSAGE}`;
+        }
+        return `${change.old_value || UNDEFINED_MESSAGE} => ${change.new_value || UNDEFINED_MESSAGE}`;
     };
     /**
      * 課題が作成された場合のペイロードをパースして slack メッセージ形式にする.
