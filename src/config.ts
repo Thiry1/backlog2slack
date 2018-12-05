@@ -16,9 +16,8 @@ export interface Config {
     };
 }
 
-export const config: Config = {
-    TEST: {
-        backlogRootUrl: "",
-        slackWebhookUrl: "",
-    },
+export const getConfig = (): Config => {
+    // require のキャッシュを削除.
+    delete require.cache[require.resolve("config")];
+    return require("config");
 };

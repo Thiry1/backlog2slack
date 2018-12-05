@@ -1,0 +1,6 @@
+{
+  "TEST": {
+    "backlogRootUrl": "https://test.backlog.com",
+    "slackWebhookUrl": "https://hooks.slack.com/services/HOGE"
+  }
+}

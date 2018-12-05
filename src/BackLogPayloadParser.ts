@@ -1,5 +1,5 @@
 import {BackLogWebHookPayload, SlackMessage, SlackNotification} from "./type";
-import {config} from "./config";
+import {getConfig} from "./config";
 
 const UNDEFINED_MESSAGE = "未設定";
 
@@ -37,13 +37,13 @@ export namespace BackLogPayloadParser {
     /**
      * プロジェクト名に対応する WebHook の URL を取得する.
      */
-    const getWebHookUrl = (projectKey: string): string | null => config[projectKey].backlogRootUrl || null;
+    const getWebHookUrl = (projectKey: string): string | null => getConfig()[projectKey].backlogRootUrl || null;
     /**
      * 課題のリンクを作成する.
      * @param payload
      */
     const createIssueLink = (payload: BackLogWebHookPayload.BasePayload) =>
-        `${config[getProjectKey(payload)].backlogRootUrl}/view/${payload.project.projectKey}-${payload.content.key_id}`;
+        `${getConfig()[getProjectKey(payload)].backlogRootUrl}/view/${payload.project.projectKey}-${payload.content.key_id}`;
     /**
      * コメントのリンクを作成する.
      * @param payload
@@ -70,7 +70,7 @@ export namespace BackLogPayloadParser {
             attachments: [
                 {
                     title: `${payload.content.summary}`,
-                    title_link: `${config[projectKey].backlogRootUrl}/view/${projectKey}-${payload.content.key_id}`,
+                    title_link: `${getConfig()[projectKey].backlogRootUrl}/view/${projectKey}-${payload.content.key_id}`,
                     pretext: "課題が追加されました",
                     color: "#36a64f",
                     fields: [

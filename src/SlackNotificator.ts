@@ -1,4 +1,4 @@
-import {SlackMessage, SlackNotification} from "./type";
+import {SlackNotification} from "./type";
 import fetch from "node-fetch";
 
 export class SlackNotificator {

@@ -2,9 +2,9 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import {BackLogPayloadParser} from "./BackLogPayloadParser";
 import {SlackNotificator} from "./SlackNotificator";
-import {config} from "./config";
+import {getConfig} from "./config";
 
-if (!config) {
+if (!getConfig()) {
     throw new Error("No config provided");
 }
 
